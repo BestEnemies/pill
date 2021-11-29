@@ -70,6 +70,17 @@ U6 (as marked on PCb) is labelled AA1 / 135 / D6 - also TBC
 
 The board also has unsoldered headers for serial comms- Output from these is TBC. 
 
+Serial Outputs indicates the following:
+
+I (626) gpio: GPIO[18]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0
+I (636) gpio: GPIO[23]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0
+I (646) gpio: GPIO[5]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0
+I (656) gpio: GPIO[34]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0
+
+From this it looks like the following:
+GPIO18 / GPIO5 - both defined as outputs - fairly likely that one is the ESP LED. The other could be the charging LED unless that is directly driven by the charging circuitry
+
+GPIO23 / GPIO34 - defined as inputs: 34 is an ADC so could be used to detect battery charge level. GPIO32 could be used for the I2- unusual as the standard i2c pins are 21 and 22.
 
 
 
