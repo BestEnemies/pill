@@ -51,44 +51,51 @@ As the current firmware enters a deep sleep and only awakes to fire off an updat
 
 Browsing to the diag page and enabling test api / beta stream can seems to enable auto- turn off. These options can be exposed on the page itself by entering : ```devOptions(true)``` into the browser console.
 
-### Quick Hardware analysis
+# Hardware
 
-The platform is built upon a single PCB with an ESP32-S0WD 
+Relevant Pins:
+GPIO25 - I2C SDA
+GPIO26 - I2C SCL
 
-* attached 32MB of flash memory (IS25WP032) https://www.issi.com/WW/pdf/IS25WP032-064-128.pdf
+The following are dumped by official firmware on boot:
 
-On a part of the board etched out are two sensors: 
-* LIS3DH (A C3H gyro) - some info found here: https://www.adafruit.com/product/2809 
-* 1AE temp sensor
+GPIO23 - Some kind of input: TBC
+GPIO34 - Some kind of input: Assume it is the analog signal from power management
+
+One of these will be the LED (charging LED is controlled by power managment):
+
+GPIO18 - Some kind of output
+GPIO5 - Some kind of output
+
+
+
+![PCB](https://github.com/BestEnemies/pill/blob/main/board.jpg)
+
+* The platform is built upon a single PCB with an ESP32-S0WD 
+* Attached 32MB of flash memory (IS25WP032) https://www.issi.com/WW/pdf/IS25WP032-064-128.pdf
+
+### I2C Sensors
+SDA: GPIO25
+SCL: GPIO26
+
+
+* LIS3DH: A C3H gyro (Address: 0x19) - some info found here: https://www.adafruit.com/product/2809 
+* 1AE temp sensor (Address: 0x48)-
 https://www.alldatasheet.net/view_marking.jsp?Searchword=1AE&sField=4&seekcls=
 https://www.ti.com/lit/ds/symlink/tmp1075.pdf?ts=1638081231479&ref_url=https%253A%252F%252Fwww.google.com%252F (WSON package)
 https://github.com/PatrickBaus/Arduino-TMP1075
 
-Both of these sensors are I2C sensors. 
+ 
 
-
+### Other chips
 
 U5 (as marked on PCB) is labelled PHN1 - Some form of switching regulator
-U6 (as marked on PCb) is labelled AAL / 135 / D6 - MCP73832 https://www.microchip.com/en-us/product/MCP73832
+U6 (as marked on PCb) is labelled AAL / 135 / D6 - MCP73832 https://www.microchip.com/en-us/product/MCP73832 - power control. 
 
 The board also has unsoldered headers for serial comms- see sample serial output below.  
 
-Serial Outputs indicates the following:
 
-I (626) gpio: GPIO[18]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0
-
-I (636) gpio: GPIO[23]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0
-
-I (646) gpio: GPIO[5]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0
-
-I (656) gpio: GPIO[34]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0
-
-From this it looks like the following:
-GPIO18 / GPIO5 - both defined as outputs - fairly likely that one is the ESP LED. The other could be the charging LED unless that is directly driven by the charging circuitry
-
-GPIO23 / GPIO34 - defined as inputs: 34 is an ADC so could be used to detect battery charge level. GPIO32 could be used for the I2- unusual as the standard i2c pins are 21 and 22.
-
-
+Sample serial output below:
 
 ```` 
 rst:0x5 (DEEPSLEEP_RESET),boot:0x33 (SPI_FAST_FLASH_BOOT)
