@@ -68,8 +68,8 @@ Both of these sensors are I2C sensors.
 
 
 
-U5 (as marked on PCB) is labelled PHN1 - TBC
-U6 (as marked on PCb) is labelled AA1 / 135 / D6 - also TBC
+U5 (as marked on PCB) is labelled PHN1 - Some form of switching regulator
+U6 (as marked on PCb) is labelled AAL / 135 / D6 - MCP73832 https://www.microchip.com/en-us/product/MCP73832
 
 The board also has unsoldered headers for serial comms- see sample serial output below.  
 
