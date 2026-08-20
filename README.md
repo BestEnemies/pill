@@ -216,6 +216,14 @@ I (7214) wifi_manager: got to end of wifi_manager_stop()
 I (7214) power: Going back to deep sleep...
 ````
 
+### Bluetooth Packet Teardown
 
+BlueTooth Payload Example: 524150540178e36d3cebb492db447fbcda2e9e0142d47a6400
+
+52415054 01     78e36d3cebb4 92dbb         447fbcda 2e9e 0142 d47a 6400
+R A P R  v1     BT MAC       Temp (Kelvin) Gravity  X    Y    Z    Batt %
+ascii	   int_8  Hex          uint_16/128   float    int_16/16      int_16/256
+
+All Big Endian
 
 
